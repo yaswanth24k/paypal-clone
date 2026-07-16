@@ -1,0 +1,22 @@
+# Build output
+/target/
+
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS files
+*.DS_Store
+Thumbs.db
+
+# Maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+# Sensitive configs
+src/main/resources/application.properties
+src/main/resources/application.yml
