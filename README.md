@@ -1,72 +1,73 @@
 # 💸 PayPal Clone – Spring Boot Microservices
 
-A production-inspired **PayPal Clone** built using **Spring Boot Microservices** that demonstrates secure authentication, distributed system design, event-driven architecture, and scalable backend development.
+A production-inspired **PayPal Clone** built using **Spring Boot Microservices** that demonstrates secure authentication, distributed system design, event-driven architecture, API Gateway routing, Redis-backed rate limiting, and scalable backend development.
 
-The project is designed to showcase real-world backend engineering concepts such as **JWT Authentication, REST APIs, API Gateway, Apache Kafka, Docker, Microservices, and Independent Databases**.
+This project showcases real-world backend engineering concepts including **Spring Boot, JWT Authentication, Spring Cloud Gateway, Redis, Apache Kafka, Docker, REST APIs, and Microservices Architecture**.
 
 ---
 
-# 🚀 Features
+## 🚀 Features
 
-- 🔐 User Registration & Login
-- 🔑 JWT Authentication & Authorization
-- 💳 Wallet Management
-- 💸 Money Transfer Between Users
-- 📩 Notification Service
+- 🔐 JWT Authentication & Authorization
+- 👤 User Registration & Login
+- 💳 Wallet Creation & Management
+- 💸 Secure Money Transfer Between Users
 - 🎁 Reward Service
-- 🌐 API Gateway for centralized routing
+- 🔔 Notification Service
+- 🌐 Spring Cloud API Gateway
+- 🚦 Redis-based Rate Limiting
 - 📦 Event-Driven Communication using Apache Kafka
-- 🔄 RESTful Microservices
-- 🐳 Docker & Docker Compose Support
 - 🗄️ Database Per Service Pattern
-- 🧩 Independent Deployable Microservices
+- 🐳 Docker & Docker Compose
+- 🔄 RESTful Microservices
 
 ---
 
-# 🏗️ System Architecture
+# 🏗️ Architecture
 
 ```text
-                                 Client
-                                    │
-                                    │
-                              HTTP Requests
-                                    │
-                                    ▼
-                          ┌──────────────────┐
-                          │   API Gateway    │
-                          └──────────────────┘
-                                    │
-        ┌───────────────┬────────────┴───────────────┬───────────────┐
-        ▼               ▼                            ▼               ▼
- ┌─────────────┐ ┌──────────────┐          ┌────────────────┐ ┌──────────────┐
- │User Service │ │Wallet Service│          │Transaction Svc │ │Notification  │
- └─────────────┘ └──────────────┘          └────────────────┘ └──────────────┘
-        │               │                            │
-        ▼               ▼                            ▼
-     MySQL DB       MySQL DB                    MySQL DB
-                                                     │
-                                                     │ Publish Event
-                                                     ▼
-                                            ┌────────────────┐
-                                            │ Apache Kafka   │
-                                            └────────────────┘
-                                                     │
-                                  ┌──────────────────┴──────────────────┐
-                                  ▼                                     ▼
-                         ┌─────────────────┐                  ┌────────────────┐
-                         │Reward Service   │                  │Notification Svc│
-                         └─────────────────┘                  └────────────────┘
-                                  │                                     │
-                               MySQL DB                             MySQL DB
+                                      Client
+                                         │
+                                         │ HTTP Requests
+                                         ▼
+                         ┌─────────────────────────────────┐
+                         │          API Gateway            │
+                         │  JWT Authentication             │
+                         │  Redis Rate Limiting            │
+                         └─────────────────────────────────┘
+                                         │
+          ┌──────────────────────────────┼──────────────────────────────┐
+          ▼                              ▼                              ▼
+ ┌─────────────────┐           ┌──────────────────┐          ┌────────────────────┐
+ │  User Service   │           │ Wallet Service   │          │ Transaction Service│
+ └─────────────────┘           └──────────────────┘          └────────────────────┘
+          │                              │                              │
+          ▼                              ▼                              ▼
+      MySQL DB                       MySQL DB                      MySQL DB
+                                                                     │
+                                                                     │ Publish Event
+                                                                     ▼
+                                                            ┌─────────────────┐
+                                                            │  Apache Kafka   │
+                                                            └─────────────────┘
+                                                                     │
+                                         ┌───────────────────────────┴───────────────────────────┐
+                                         ▼                                                       ▼
+                              ┌────────────────────┐                                  ┌───────────────────┐
+                              │ Notification Svc  │                                  │  Reward Service   │
+                              └────────────────────┘                                  └───────────────────┘
+                                         │                                                       │
+                                         ▼                                                       ▼
+                                     MySQL DB                                               MySQL DB
 ```
 
 ---
 
-# 🔄 Workflow
+# 🔄 Application Workflow
 
-## User Registration
+## 1️⃣ User Registration
 
-```
+```text
 Client
    │
    ▼
@@ -81,9 +82,9 @@ Return Success
 
 ---
 
-## User Login
+## 2️⃣ User Login
 
-```
+```text
 Client
    │
    ▼
@@ -93,14 +94,14 @@ Validate Credentials
    │
 Generate JWT
    │
-Return Token
+Return JWT Token
 ```
 
 ---
 
-## Money Transfer
+## 3️⃣ Money Transfer
 
-```
+```text
 Client
    │
 Bearer Token
@@ -108,40 +109,42 @@ Bearer Token
    ▼
 API Gateway
    │
-JWT Authentication
+JWT Validation
+Redis Rate Limiting
    │
    ▼
 Transaction Service
    │
 Debit Sender Wallet
 Credit Receiver Wallet
-Store Transaction
+Save Transaction
    │
-Publish Kafka Event
-   │
+Publish Event
    ▼
 Apache Kafka
    │
    ├────────► Notification Service
-   │            Send Notification
+   │              │
+   │              └── Send Notification
    │
    └────────► Reward Service
-                Add Reward Points
+                  │
+                  └── Add Reward Points
 ```
 
 ---
 
-# 📁 Project Structure
+# 📂 Project Structure
 
-```
+```text
 paypal-clone
 │
 ├── api-gateway
 ├── user-service
 ├── wallet-service
 ├── transaction-service
-├── reward-service
 ├── notification-service
+├── reward-service
 │
 ├── docker-compose.yml
 ├── pom.xml
@@ -150,15 +153,15 @@ paypal-clone
 
 ---
 
-# ⚙️ Tech Stack
+# 🛠️ Tech Stack
 
 ## Backend
 
 - Java 17
 - Spring Boot
-- Spring MVC
-- Spring Data JPA
 - Spring Security
+- Spring Data JPA
+- Spring MVC
 - JWT
 - Maven
 
@@ -171,6 +174,10 @@ paypal-clone
 ## Database
 
 - MySQL
+
+## Caching
+
+- Redis
 
 ## DevOps
 
@@ -186,55 +193,25 @@ paypal-clone
 
 ---
 
-# 📦 Microservices
+# 📦 Services
 
 | Service | Responsibility |
 |----------|----------------|
 | User Service | User Registration, Login, JWT Generation |
 | Wallet Service | Wallet Creation & Balance Management |
-| Transaction Service | Money Transfer Between Users |
-| Notification Service | Sends Notifications using Kafka Events |
-| Reward Service | Rewards Users after Successful Transactions |
-| API Gateway | Centralized Routing & Authentication |
-
----
-
-# 🌐 REST Communication
-
-```
-API Gateway
-      │
-      ├────────► User Service
-      │
-      ├────────► Wallet Service
-      │
-      └────────► Transaction Service
-```
-
----
-
-# 📩 Event Driven Communication
-
-```
-Transaction Service
-        │
-        │ Publish Event
-        ▼
-   Apache Kafka
-        │
-        ├────────► Notification Service
-        │
-        └────────► Reward Service
-```
+| Transaction Service | Process Money Transfers |
+| Notification Service | Sends Transaction Notifications |
+| Reward Service | Rewards Successful Transactions |
+| API Gateway | Authentication, Routing & Rate Limiting |
 
 ---
 
 # 🔐 Authentication Flow
 
-```
+```text
 Client
    │
-Login
+POST /auth/login
    │
    ▼
 User Service
@@ -244,33 +221,44 @@ Generate JWT
 Return Token
    │
    ▼
-Client stores JWT
+Client
    │
-Every Request
-   │
-Authorization: Bearer <TOKEN>
+Authorization: Bearer <JWT>
    │
    ▼
 API Gateway
    │
 Validate JWT
+Check Redis Rate Limit
    │
 Forward Request
 ```
 
 ---
 
-# 🐳 Running the Project
+# ⚡ Event-Driven Communication
 
-## 1. Clone Repository
-
-```bash
-git clone https://github.com/yaswanth24k/paypal-clone.git
+```text
+Transaction Service
+          │
+          │ Publish Transaction Event
+          ▼
+     Apache Kafka
+          │
+          ├────────► Notification Service
+          │
+          └────────► Reward Service
 ```
 
 ---
 
-## 2. Navigate
+# 🚀 Getting Started
+
+## Clone Repository
+
+```bash
+git clone https://github.com/yaswanth24k/paypal-clone.git
+```
 
 ```bash
 cd paypal-clone
@@ -278,9 +266,9 @@ cd paypal-clone
 
 ---
 
-## 3. Configure MySQL
+## Configure MySQL
 
-Create the following databases:
+Create separate databases:
 
 ```
 user_db
@@ -290,36 +278,42 @@ reward_db
 notification_db
 ```
 
-Update database credentials inside every service's `application.yml`.
+Update database credentials inside each service's `application.yml`.
 
 ---
 
-## 4. Start Kafka & Zookeeper
+## Start Docker Services
 
 ```bash
 docker compose up -d
 ```
 
+If using Redis separately:
+
+```bash
+docker run -d --name redis -p 6379:6379 redis
+```
+
 ---
 
-## 5. Start Microservices
+## Start Services
 
-Run the services in the following order:
+Run the following services:
 
 ```
 1. User Service
 2. Wallet Service
 3. Transaction Service
-4. Reward Service
-5. Notification Service
+4. Notification Service
+5. Reward Service
 6. API Gateway
 ```
 
 ---
 
-# 📮 API Example
+# 📬 API Examples
 
-## Register
+## Register User
 
 ```
 POST /auth/signup
@@ -343,7 +337,7 @@ Response
 
 ---
 
-Use JWT for protected APIs
+Use JWT for every protected request
 
 ```
 Authorization: Bearer <JWT_TOKEN>
@@ -382,17 +376,17 @@ Response
 
 ---
 
-# 🎯 Design Patterns Used
+# 🧠 Design Patterns
 
 - Microservices Architecture
-- Database per Service Pattern
-- Event-Driven Architecture
 - API Gateway Pattern
-- DTO Pattern
+- Database Per Service Pattern
+- Event-Driven Architecture
 - Repository Pattern
-- Service Layer Pattern
+- DTO Pattern
 - Dependency Injection
-- JWT-Based Authentication
+- JWT Authentication
+- Redis Rate Limiting
 
 ---
 
@@ -402,28 +396,26 @@ Response
 - REST API Development
 - Spring Security
 - JWT Authentication
+- Spring Cloud Gateway
+- Redis
+- Rate Limiting
 - Apache Kafka
-- Asynchronous Communication
+- Event-Driven Communication
 - Docker
 - Docker Compose
-- API Gateway
-- Service Isolation
-- Database Per Service
-- Event Publishing & Consumption
-- Backend System Design
+- Distributed Backend Design
 
 ---
 
 # 🚀 Future Enhancements
 
-- Redis-based Rate Limiting
 - Eureka Service Discovery
-- Circuit Breaker (Resilience4j)
+- Resilience4j Circuit Breaker
 - Distributed Tracing
 - Centralized Logging
 - Kubernetes Deployment
-- CI/CD using GitHub Actions
 - Prometheus & Grafana Monitoring
+- CI/CD with GitHub Actions
 - OpenAPI / Swagger Documentation
 
 ---
@@ -433,8 +425,10 @@ Response
 **Sai Yaswanth**
 
 - GitHub: https://github.com/yaswanth24k
-- LinkedIn: https:https://www.linkedin.com/in/sai-yaswanth-863a39373/
+- LinkedIn: https://www.linkedin.com/in/sai-yaswanth-863a39373/
 
 ---
 
-## ⭐ If you found this project useful, consider giving it a Star!
+## ⭐ If you found this project helpful, consider giving it a Star!
+
+If you have any suggestions or feedback, feel free to open an issue or connect with me on LinkedIn.
