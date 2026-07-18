@@ -433,7 +433,7 @@ Response
 **Sai Yaswanth**
 
 - GitHub: https://github.com/yaswanth24k
-- LinkedIn: https://www.linkedin.com/in/<your-profile>
+- LinkedIn: https:https://www.linkedin.com/in/sai-yaswanth-863a39373/
 
 ---
 
