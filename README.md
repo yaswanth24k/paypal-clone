@@ -1,65 +1,89 @@
-PayPal Clone – Microservices Architecture
+# 💸 PayPal Clone – Spring Boot Microservices
 
-A production-inspired PayPal Clone built using Spring Boot Microservices, demonstrating secure authentication, distributed system design, event-driven communication, and scalable backend architecture.
+A production-inspired **PayPal Clone** built using **Spring Boot Microservices** that demonstrates secure authentication, distributed system design, event-driven architecture, and scalable backend development.
 
-This project focuses on backend engineering concepts such as JWT authentication, REST APIs, API Gateway, asynchronous messaging with Kafka, Docker containerization, and independent microservices.
+The project is designed to showcase real-world backend engineering concepts such as **JWT Authentication, REST APIs, API Gateway, Apache Kafka, Docker, Microservices, and Independent Databases**.
 
-🚀 Features
-🔐 JWT Authentication & Authorization
-👤 User Registration & Login
-💳 Wallet Management
-💸 Money Transfer Between Users
-📩 Notification Service
-🎁 Reward Service
-📦 Event-Driven Architecture using Apache Kafka
-🌐 RESTful APIs
-🐳 Dockerized Services
-🗄️ Independent Databases for Microservices
-🔄 Service-to-Service Communication
-🧩 Microservices Architecture
-🏗️ Architecture
-                         Client
-                           │
-                           │ REST API
-                           ▼
-                  ┌─────────────────┐
-                  │   API Gateway   │
-                  └─────────────────┘
-                           │
-      ┌────────────────────┼────────────────────┐
-      ▼                    ▼                    ▼
-┌─────────────┐     ┌──────────────┐     ┌──────────────┐
-│ User Service│     │ Wallet Service│     │Transaction Svc│
-└─────────────┘     └──────────────┘     └──────────────┘
-       │                    │                    │
-       │                    │                    │
-       ▼                    ▼                    ▼
-     MySQL               MySQL               MySQL
-                                                │
-                                                │ Publish Event
-                                                ▼
-                                         Apache Kafka
-                                                │
-                         ┌──────────────────────┴──────────────────────┐
-                         ▼                                             ▼
-               ┌──────────────────┐                         ┌─────────────────┐
-               │Notification Svc  │                         │ Reward Service  │
-               └──────────────────┘                         └─────────────────┘
-                         │                                             │
-                      MySQL                                         MySQL
-🔄 Application Workflow
-1. User Registration
+---
+
+# 🚀 Features
+
+- 🔐 User Registration & Login
+- 🔑 JWT Authentication & Authorization
+- 💳 Wallet Management
+- 💸 Money Transfer Between Users
+- 📩 Notification Service
+- 🎁 Reward Service
+- 🌐 API Gateway for centralized routing
+- 📦 Event-Driven Communication using Apache Kafka
+- 🔄 RESTful Microservices
+- 🐳 Docker & Docker Compose Support
+- 🗄️ Database Per Service Pattern
+- 🧩 Independent Deployable Microservices
+
+---
+
+# 🏗️ System Architecture
+
+```text
+                                 Client
+                                    │
+                                    │
+                              HTTP Requests
+                                    │
+                                    ▼
+                          ┌──────────────────┐
+                          │   API Gateway    │
+                          └──────────────────┘
+                                    │
+        ┌───────────────┬────────────┴───────────────┬───────────────┐
+        ▼               ▼                            ▼               ▼
+ ┌─────────────┐ ┌──────────────┐          ┌────────────────┐ ┌──────────────┐
+ │User Service │ │Wallet Service│          │Transaction Svc │ │Notification  │
+ └─────────────┘ └──────────────┘          └────────────────┘ └──────────────┘
+        │               │                            │
+        ▼               ▼                            ▼
+     MySQL DB       MySQL DB                    MySQL DB
+                                                     │
+                                                     │ Publish Event
+                                                     ▼
+                                            ┌────────────────┐
+                                            │ Apache Kafka   │
+                                            └────────────────┘
+                                                     │
+                                  ┌──────────────────┴──────────────────┐
+                                  ▼                                     ▼
+                         ┌─────────────────┐                  ┌────────────────┐
+                         │Reward Service   │                  │Notification Svc│
+                         └─────────────────┘                  └────────────────┘
+                                  │                                     │
+                               MySQL DB                             MySQL DB
+```
+
+---
+
+# 🔄 Workflow
+
+## User Registration
+
+```
 Client
    │
    ▼
 User Service
    │
-   ▼
 Create User
    │
-   ▼
 Create Wallet
-2. User Login
+   │
+Return Success
+```
+
+---
+
+## User Login
+
+```
 Client
    │
    ▼
@@ -70,75 +94,114 @@ Validate Credentials
 Generate JWT
    │
 Return Token
-3. Money Transfer
+```
+
+---
+
+## Money Transfer
+
+```
 Client
    │
-JWT Token
+Bearer Token
    │
    ▼
 API Gateway
    │
-Authenticate Request
+JWT Authentication
    │
    ▼
 Transaction Service
    │
-Debit Sender
-Credit Receiver
-Save Transaction
+Debit Sender Wallet
+Credit Receiver Wallet
+Store Transaction
    │
 Publish Kafka Event
    │
    ▼
-────────────────────────────────────
-│                                  │
-▼                                  ▼
-Notification Service         Reward Service
-Send Notification          Add Reward Points
-📁 Project Structure
-paypal-clone/
+Apache Kafka
+   │
+   ├────────► Notification Service
+   │            Send Notification
+   │
+   └────────► Reward Service
+                Add Reward Points
+```
+
+---
+
+# 📁 Project Structure
+
+```
+paypal-clone
 │
-├── api-gateway/
-├── user-service/
-├── wallet-service/
-├── transaction-service/
-├── reward-service/
-├── notification-service/
+├── api-gateway
+├── user-service
+├── wallet-service
+├── transaction-service
+├── reward-service
+├── notification-service
 │
 ├── docker-compose.yml
+├── pom.xml
 └── README.md
-🛠️ Tech Stack
-Backend
-Java 17
-Spring Boot
-Spring MVC
-Spring Data JPA
-Spring Security
-JWT
-Maven
-Microservices
-REST APIs
-Spring Cloud Gateway
-Apache Kafka
-Database
-MySQL
-DevOps
-Docker
-Docker Compose
-Tools
-IntelliJ IDEA
-Git
-GitHub
-Postman
-⚙️ Services
-Service	Responsibility
-User Service	Registration, Login, JWT Authentication
-Wallet Service	Wallet Creation & Balance Management
-Transaction Service	Money Transfers
-Notification Service	Transaction Notifications
-Reward Service	Reward Points
-API Gateway	Centralized Routing & Authentication
-📡 REST Communication
+```
+
+---
+
+# ⚙️ Tech Stack
+
+## Backend
+
+- Java 17
+- Spring Boot
+- Spring MVC
+- Spring Data JPA
+- Spring Security
+- JWT
+- Maven
+
+## Microservices
+
+- Spring Cloud Gateway
+- REST APIs
+- Apache Kafka
+
+## Database
+
+- MySQL
+
+## DevOps
+
+- Docker
+- Docker Compose
+
+## Tools
+
+- IntelliJ IDEA
+- Git
+- GitHub
+- Postman
+
+---
+
+# 📦 Microservices
+
+| Service | Responsibility |
+|----------|----------------|
+| User Service | User Registration, Login, JWT Generation |
+| Wallet Service | Wallet Creation & Balance Management |
+| Transaction Service | Money Transfer Between Users |
+| Notification Service | Sends Notifications using Kafka Events |
+| Reward Service | Rewards Users after Successful Transactions |
+| API Gateway | Centralized Routing & Authentication |
+
+---
+
+# 🌐 REST Communication
+
+```
 API Gateway
       │
       ├────────► User Service
@@ -146,112 +209,232 @@ API Gateway
       ├────────► Wallet Service
       │
       └────────► Transaction Service
-📨 Event Driven Communication
+```
+
+---
+
+# 📩 Event Driven Communication
+
+```
 Transaction Service
         │
-        │
-Publish Event
-        │
+        │ Publish Event
         ▼
-Apache Kafka
+   Apache Kafka
         │
         ├────────► Notification Service
         │
         └────────► Reward Service
-🐳 Running the Project
-1. Clone Repository
+```
+
+---
+
+# 🔐 Authentication Flow
+
+```
+Client
+   │
+Login
+   │
+   ▼
+User Service
+   │
+Generate JWT
+   │
+Return Token
+   │
+   ▼
+Client stores JWT
+   │
+Every Request
+   │
+Authorization: Bearer <TOKEN>
+   │
+   ▼
+API Gateway
+   │
+Validate JWT
+   │
+Forward Request
+```
+
+---
+
+# 🐳 Running the Project
+
+## 1. Clone Repository
+
+```bash
 git clone https://github.com/yaswanth24k/paypal-clone.git
-2. Navigate
+```
+
+---
+
+## 2. Navigate
+
+```bash
 cd paypal-clone
-3. Configure MySQL
+```
 
-Create separate databases:
+---
 
+## 3. Configure MySQL
+
+Create the following databases:
+
+```
 user_db
 wallet_db
 transaction_db
 reward_db
 notification_db
+```
 
-Update each service's application.yml with your MySQL credentials.
+Update database credentials inside every service's `application.yml`.
 
-4. Start Kafka
+---
+
+## 4. Start Kafka & Zookeeper
+
+```bash
 docker compose up -d
+```
 
-This starts:
+---
 
-Kafka
-Zookeeper
-5. Start Services
+## 5. Start Microservices
 
-Run services in the following order:
+Run the services in the following order:
 
+```
 1. User Service
 2. Wallet Service
 3. Transaction Service
 4. Reward Service
 5. Notification Service
 6. API Gateway
-🔑 Authentication
+```
 
-Login using:
+---
 
+# 📮 API Example
+
+## Register
+
+```
+POST /auth/signup
+```
+
+---
+
+## Login
+
+```
 POST /auth/login
+```
 
-Receive:
+Response
 
+```json
 {
   "token": "<JWT_TOKEN>"
 }
+```
 
-Use it in every protected request:
+---
 
+Use JWT for protected APIs
+
+```
 Authorization: Bearer <JWT_TOKEN>
-📮 Example Transaction Request
+```
+
+---
+
+## Create Transaction
+
+```
 POST /api/transactions/create
+```
+
+Request
+
+```json
 {
   "senderId": 1,
   "receiverId": 2,
-  "amount": 250.0
+  "amount": 250
 }
+```
 
-Example Response
+Response
 
+```json
 {
   "id": 1,
   "senderId": 1,
   "receiverId": 2,
-  "amount": 250.0,
-  "status": "SUCCESS"
+  "amount": 250,
+  "status": "SUCCESS",
+  "timestamp": "2026-07-16T21:08:54"
 }
-🎯 Learning Objectives
+```
 
-This project demonstrates practical implementation of:
+---
 
-Microservices Architecture
-JWT Authentication
-Secure REST API Development
-Apache Kafka Event Streaming
-Asynchronous Communication
-Docker Containerization
-API Gateway
-Distributed System Design
-Service Isolation
-Database per Service Pattern
-🚧 Future Improvements
-Redis-based Rate Limiting
-Eureka Service Discovery
-Circuit Breaker (Resilience4j)
-Distributed Tracing
-Centralized Logging
-Kubernetes Deployment
-CI/CD Pipeline with GitHub Actions
-Monitoring using Prometheus & Grafana
-OpenAPI / Swagger Documentation
-👨‍💻 Author
+# 🎯 Design Patterns Used
 
-Sai Yaswanth
+- Microservices Architecture
+- Database per Service Pattern
+- Event-Driven Architecture
+- API Gateway Pattern
+- DTO Pattern
+- Repository Pattern
+- Service Layer Pattern
+- Dependency Injection
+- JWT-Based Authentication
 
-GitHub: https://github.com/yaswanth24k
-LinkedIn: (Add your LinkedIn profile URL here)
-⭐ If you found this project interesting, consider giving it a star!
+---
+
+# 📚 Concepts Demonstrated
+
+- Spring Boot Microservices
+- REST API Development
+- Spring Security
+- JWT Authentication
+- Apache Kafka
+- Asynchronous Communication
+- Docker
+- Docker Compose
+- API Gateway
+- Service Isolation
+- Database Per Service
+- Event Publishing & Consumption
+- Backend System Design
+
+---
+
+# 🚀 Future Enhancements
+
+- Redis-based Rate Limiting
+- Eureka Service Discovery
+- Circuit Breaker (Resilience4j)
+- Distributed Tracing
+- Centralized Logging
+- Kubernetes Deployment
+- CI/CD using GitHub Actions
+- Prometheus & Grafana Monitoring
+- OpenAPI / Swagger Documentation
+
+---
+
+# 👨‍💻 Author
+
+**Sai Yaswanth**
+
+- GitHub: https://github.com/yaswanth24k
+- LinkedIn: https://www.linkedin.com/in/<your-profile>
+
+---
+
+## ⭐ If you found this project useful, consider giving it a Star!
